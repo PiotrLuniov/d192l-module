@@ -22,27 +22,27 @@ job('MNTLAB-kkaminski-main-build-job') {
             ''')
               
         }
-    
+       
     }
-  }
+}
 
   
   
   steps {
         downstreamParameterized {
-            trigger('BUILDS_TRIGGER') {
+            trigger('$BUILDS_TRIGGER') {
                 block {
                     buildStepFailure('FAILURE')
                     failure('FAILURE')
                     unstable('UNSTABLE')
                 }
                 parameters {
-                  predefinedProp('Branch_name', '${BRANCH_NAME}')
+                  predefinedProp('Branch_name', '$BRANCH_NAME')
   
                }
             }
         }
-  }
+    }
 }
               
 
@@ -72,9 +72,9 @@ for(i in 1..4) {
                     
             ''')
               
-         }
-       }
-     }
+          }
+      }
+  }
     
    
   
@@ -95,7 +95,8 @@ for(i in 1..4) {
           chmod +x script.sh
           ./script.sh > output.txt
           tar czf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy
-        ''')
+
+            ''')
          
         }
     
@@ -103,9 +104,8 @@ for(i in 1..4) {
   archiveArtifacts {
       pattern('${BRANCH_NAME}_dsl_script.tar.gz')
       onlyIfSuccessful()
-  }
-}
-
-  
+      }
     }
-}
+ 
+   }
+ }
