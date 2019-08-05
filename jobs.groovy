@@ -68,14 +68,19 @@ for(i in 1..4){
             git('https://github.com/MNT-Lab/d192l-module.git', '$BRANCH_NAME')
         }
         steps {
-            shell {
-                command('chmod +x script.sh  &&  ./script.sh > output.txt && tar czvf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy')
-            }
+            shell("chmod +x script.sh")
+            shell("echo \$(./script.sh) > output.txt")
+            shell("tar -czvf \${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy")
         }
+
         publishers {
             archiveArtifacts {
-                pattern('${BRANCH_NAME}_dsl_script.tar.gz')
-                onlyIfSuccessful()
+                pattern("output.txt")
+                pattern("\${BRANCH_NAME}_dsl_script.tar.gz")
+                allowEmpty(false)
+                onlyIfSuccessful(false)
+                fingerprint(false)
+                defaultExcludes(true)
             }
         }
     }
