@@ -2,7 +2,7 @@ job("MNTLAB-sbarysevich-master") {
  parameters {
    choiceParam('BRANCH_NAME', ['sbarysevich', 'master',])
    activeChoiceParam('slaves') {
-     choiceType('CHECKBOX')
+     choiceType('SINGLE_SELECT')
      groovyScript {
           script('''
                  def slave = []
@@ -49,7 +49,7 @@ job("MNTLAB-sbarysevich-master") {
                     }
                 
                     def branches = proc.in.text.readLines().collect {
-                        it.replaceAll(/[a-z0-9]*\trefs/heads//, '')
+                        it.replaceAll(/[a-z0-9]*\trefs\\/heads\\//, '')
                     }''')
              fallbackScript('"any branche not found"')
           }
@@ -72,6 +72,9 @@ job("MNTLAB-sbarysevich-master") {
         }
      }
 }
+
+
+
 
 
 
