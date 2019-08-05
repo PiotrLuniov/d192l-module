@@ -24,28 +24,16 @@ job('MNTLAB-abutsko-main-build-job') {
 
     blockOnDownstreamProjects()
 
-    scm {
-        git {
-            remote {
-                name('branch')
-                url('https://github.com/MNT-Lab/d192l-module.git')
-            }
-            branch('$BRANCH_NAME')
-        }
-    }
-
     steps {
         downstreamParameterized {
-            jobs.each {
-                trigger(it) {
-                    block {
-                        buildStepFailure('FAILURE')
-                        failure('FAILURE')
-                        unstable('UNSTABLE')
-                    }
-                    parameters {
-                        predefinedProp('BRANCH_NAME', '$BRANCH_NAME')
-                    }
+            trigger('$EXECUTED_JOBS') {
+                block {
+                    buildStepFailure('FAILURE')
+                    failure('FAILURE')
+                    unstable('UNSTABLE')
+                }
+                parameters {
+                    predefinedProp('BRANCH_NAME', '$BRANCH_NAME')
                 }
             }
         }
@@ -78,6 +66,20 @@ for ( i in (1..4) ) {
                     fallbackScript('"There is no branches"')
                 }
             }
+        }
+
+        scm {
+            git {
+                remote {
+                    name('branch')
+                    url('https://github.com/MNT-Lab/d192l-module.git')
+                }
+                branch('$BRANCH_NAME')
+            }
+        }
+
+        steps {
+            shell('sh script.sh > output.txt')
         }
     }
 }
