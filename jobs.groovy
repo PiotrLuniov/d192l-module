@@ -86,7 +86,7 @@ for (job in child_jobs) {
         }
         publishers {
             archiveArtifacts {
-                pattern(".*\${BRANCH_NAME}_dsl_script.tar.gz")
+                pattern("\${BRANCH_NAME}_dsl_script.tar.gz")
             }
         }
     }
