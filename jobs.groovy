@@ -1,4 +1,4 @@
-def student=ashamchonak
+def student = "ashamchonak"
 
 job("MNTLAB-{student}-main-build-job") {
 	description()
