@@ -45,7 +45,7 @@ return jobs
 
 // part 2: child jobs execute
 1.step 5, 1, {
-    job("MNTLAB-mmarkova-child${i}-build-job") {
+    job("MNTLAB-mmarkova-child${it}-build-job") {
         
 	  	parameters {
 	        activeChoiceParam('BRANCH_NAME') {
@@ -56,8 +56,8 @@ return jobs
 	def branchApi = new URL("https://api.github.com/repos/${project}/branches")
 	def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
 	def branchesNames = []
-	branches.each {
-		branchesNames.add("${it.name}")
+	branches.each { elem ->
+		branchesNames.add("${elem.name}")
 	}
 	def index = 0
 	index = branchesNames.indexOf('mmarkova')
