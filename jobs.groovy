@@ -1,4 +1,5 @@
 job('MNT-lab-hbledai-main-job') {
+ blockOnDownstreamProjects()
     parameters {
         activeChoiceParam('BRANCH') {
             choiceType('SINGLE_SELECT')
