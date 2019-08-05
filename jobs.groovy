@@ -28,22 +28,14 @@ freeStyleJob("${main_job}"){
         }
     }
     blockOnDownstreamProjects()
-    steps {
-        triggerBuilder {
-            configs {
-                blockableBuildTriggerConfig {
-                    projects("\$JOBS")
-                    configs {
-                        currentBuildParameters()
-                        predefinedBuildParameters {
-                            properties("\$BRANCH_NAME")
-                            textParamValueOnNewLine(false)
-                        }
-                    }
-                    block{
-                        buildStepFailureThreshold("FAILURE")
-                        unstableThreshold("")
-                        failureThreshold("")
+    publishers {
+        downstreamParameterized {
+            trigger('$JOBS') {
+                parameters {
+                    predefinedBuildParameters {
+                        properties('BRANCH_NAME=$BRANCH_NAME')
+                        textParamValueOnNewLine(true)
+
                     }
                 }
             }
