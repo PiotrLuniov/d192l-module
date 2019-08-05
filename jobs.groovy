@@ -76,7 +76,7 @@ for(i in 1..4) {
        }
      }
     
-    }
+   
   
  scm {
        git {
@@ -90,10 +90,15 @@ for(i in 1..4) {
    }
   
   steps {
-            shell('./script.sh > output.txt')
+            shell('''
 
-            shell('tar czf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy')
+          chmod +x script.sh
+          ./script.sh > output.txt
+          tar czf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy
+        ''')
+         
         }
 
   
+    }
 }
