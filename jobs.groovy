@@ -44,7 +44,6 @@ return jobs
     	}
 }
 
-
 for (i in (1..4)) {
 	job("MNTLAB-" + student + "-child${i}-build-job") {
 		description()
@@ -82,10 +81,9 @@ return branches
 		disabled(false)
 		concurrentBuild(false)
 		steps {
-			shell("ls -la")
 			shell("chmod +x script.sh")
 			shell("echo \$(./script.sh) > output.txt")
-			shell("tar czvf \${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy")
+			shell("tar -czvf \${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy")
 		}
 
 		publishers {
@@ -99,9 +97,3 @@ return branches
 		}
 	}
 }
-
-
-
-
-
-
