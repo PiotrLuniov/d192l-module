@@ -3,8 +3,8 @@ job('MNTLAB-akuznetsova-main-build-job') {
         activeChoiceParam('BRANCH_NAME') {
             choiceType('SINGLE_SELECT')
             groovyScript {
-                script('return["akuznetsova", "master"]')
-                fallbackScript('return["error"]')
+                script('return ["akuznetsova", "master"]')
+                fallbackScript('return ["error"]')
             }
         }
         activeChoiceReactiveParam('BUILDS_TRIGGER') {
