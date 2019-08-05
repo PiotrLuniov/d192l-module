@@ -10,7 +10,7 @@ job("EPBYMINW9010/MNTLAB-${student}-main-build-job"){
       choiceType('CHECKBOX')
       for (i in 1..4) { 
         groovyScript {
-          script('return["MNTLAB-hkanonik-child1-build-job", "MNTLAB-hkanonik-child2-build-job", "MNTLAB-hkanonik-child3-build-job"]')
+          script('return["MNTLAB-hkanonik-child$i-build-job"]')
           fallbackScript('"fallback choice"')
         }
       }
