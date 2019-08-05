@@ -4,6 +4,6 @@ job('MNTLAB-abutsko-main-build-job') {
 
     // Branch name parameter
     parameters {
-        choiceParam('BRANCH_NAME', ['abutsko (default)', 'master'], 'Choose branch name')
+        stringParam('BRANCH_NAME', 'abutsko', 'Choose a branch name')
     }
 }
