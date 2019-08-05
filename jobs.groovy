@@ -18,6 +18,21 @@ job('MNTLAB-iyaruk-main-build-job') {
 
         }
     }
+	scm {
+            git {
+                remote {
+                    name('branch')
+                    url('https://github.com/MNT-Lab/d192l-module.git')
+                }
+                branch("\$BRANCH_NAME")
+            }
+        }
+      triggers {
+          scm('H/15 * * * *')
+      }
+      steps {
+      	  shell('bash ./script.sh')
+      }
   }
 }
 
