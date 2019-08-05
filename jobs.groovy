@@ -4,27 +4,6 @@
 
 job("MNTLAB-mmarkova-main-build-job") {
   	parameters {
-        activeChoiceParam('BRANCH_NAME') {
-            choiceType('SINGLE_SELECT')
-            groovyScript {
-                script('''
-def project = 'MNT-Lab/d192l-module'
-def branchApi = new URL("https://api.github.com/repos/${project}/branches")
-def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
-def branchesNames = []
-branches.each {
-		branchesNames.add(it.name)
-}
-def index = 0
-branchesNames.findIndexOf {
-	index = it.equals('mmarkova')
-}
-branchesNames.swap(0, index)
-return branchesNames
-          		''')
-            }
-        }
-
 		activeChoiceParam('BUILDS_TRIGGER') {
 			description('Available options')
 			choiceType('CHECKBOX')
@@ -61,4 +40,56 @@ return jobs
             }
         }
     }
+}
+
+
+// part 2: child jobs execute
+for i in (1..4) {
+    job("MNTLAB-mmarkova-child${i}-build-job") {
+        
+	  	parameters {
+	        activeChoiceParam('BRANCH_NAME') {
+	            choiceType('SINGLE_SELECT')
+	            groovyScript {
+	                script('''
+	def project = 'MNT-Lab/d192l-module'
+	def branchApi = new URL("https://api.github.com/repos/${project}/branches")
+	def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
+	def branchesNames = []
+	branches.each {
+		branchesNames.add("${it.name}")
+	}
+	def index = 0
+	index = branchesNames.indexOf('mmarkova')
+	branchesNames.swap(0, index)
+	return branchesNames
+	          		''')
+	            }
+	        }
+	    } 
+
+	    scm {
+	        git {
+	            remote {
+	                name('branch')
+	                url('https://github.com/MNT-Lab/d192l-module.git')
+	            }
+	            branch('$BRANCH_NAME')
+	        }
+	    }
+
+	    steps {
+	        shell('sh script.sh > output.txt')
+
+	        shell('tar czf $BRANCH_NAME_output.tar.gz jobs.groovy')
+	    }
+
+	    publishers {
+	        archiveArtifacts {
+	            pattern('output.txt')
+	            pattern('$BRANCH_NAME_output.tar.gz')
+	            onlyIfSuccessful()
+	        }
+	    }
+	}
 }
