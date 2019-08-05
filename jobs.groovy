@@ -8,15 +8,14 @@ job("MNTLAB-mmarkova-main-build-job") {
             choiceType('SINGLE_SELECT')
             groovyScript {
                 script('''
-					def project = 'MNT-Lab/d192l-module'
-					def branchApi = new URL("https://api.github.com/repos/${project}/branches")
-					def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
-					def branchesNames = []
-					branches.each {
-						branchesNames.add("${it.name}")
-					}
-					println branchesNames
-					return branchesNames
+def project = 'MNT-Lab/d192l-module'
+def branchApi = new URL("https://api.github.com/repos/${project}/branches")
+def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
+def branchesNames = []
+branches.each {
+	branchesNames.add(it.name)
+}
+return branchesNames
           		''')
             }
         }
@@ -25,14 +24,13 @@ job("MNTLAB-mmarkova-main-build-job") {
 			description('Available options')
 			choiceType('CHECKBOX')
 			groovyScript {
-			  script('''
-			  	    def jobs = []
-			        4.times {
-			            jobs.add("MNTLAB-mmarkova-child${it+1}-build-job")
-			        }
-			        println jobs
-			        return jobs
-			  	''')
+				script('''
+def jobs = []
+4.times {
+    jobs.add("MNTLAB-mmarkova-child${it+1}-build-job")
+}
+return jobs
+				''')
 	      	}
    		}
 	}
