@@ -1,20 +1,41 @@
-def project = 'MNT-Lab/d192l-module'
-def privateToken = '775768f59bed5fca4f1c5687b29ba8f8fab72315'
-def branchApi = new URL("https://api.github.com/repos/${project}/branches?private_token=${privateToken}")
-def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
-def branchesNames = []
-branches.each {
-	branchesNames.add("${it.name}")
-}
-
-4.times {
-	job("MNTLAB-mmarkova-child${it+1}-build-job")
+job("MNTLAB-mmarkova-main-build-job") {
+	properties(
+      	parameters(
+	        activeChoiceParam('BRANCH_NAME') {
+	            description('Allows user choose from multiple choices')
+	            filterable()
+	            choiceType('SINGLE_SELECT')
+	            groovyScript {
+	                script('''
+						def project = 'MNT-Lab/d192l-module'
+						def branchApi = new URL("https://api.github.com/repos/${project}/branches")
+						def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
+						def branchesNames = []
+						branches.each {
+							branchesNames.add("${it.name}")
+						}
+						return branchesNames
+              	''')
+	            }
+	        }
+        )
+    )
 }
 
 job("MNTLAB-mmarkova-main-build-job") {
-	properties {
-		parameters {
-		choiceParam('BRANCH_NAME', branchesNames, 'description')
-		}
-	}
+  parameters {
+          activeChoiceParam('JOBS') {
+          description('Allows user choose from multiple choices')
+          choiceType('CHECKBOX')
+          groovyScript {
+              script('''
+              	    def jobs = []
+                    4.times {
+                        jobs.add("MNTLAB-mmarkova-child${it+1}-build-job")
+                    }
+                    return jobs
+              	''')
+          }
+      }
+   }
 }
