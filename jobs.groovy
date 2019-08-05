@@ -84,7 +84,7 @@ it.split('/')[-1]
 return branches
 			'''
 			)			
-		fallbackScript('"No branches"')
+		
 		}
 		// ./script.sh > output.txt
 		publishers {
