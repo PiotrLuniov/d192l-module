@@ -56,11 +56,12 @@ return jobs
 	def branchApi = new URL("https://api.github.com/repos/${project}/branches")
 	def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
 	def branchesNames = []
-	branches.each { elem ->
-		branchesNames.add("${elem.name}")
-	}
 	def index = 0
-	index = branchesNames.indexOf('mmarkova')
+	branches.eachWithIndex { elem, ind ->
+    	if ("${elem}" == 'mmarkova') 
+      		index = ind
+		branchesNames.add(${elem})
+	}
 	branchesNames.swap(0, index)
 	return branchesNames
 	          		''')
