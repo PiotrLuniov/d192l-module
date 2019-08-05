@@ -4,8 +4,7 @@ job("MNTLAB-sbarysevich-master") {
    activeChoiceParam('slaves') {
      choiceType('CHECKBOX')
      groovyScript {
-          script('''
-                 def slave = []
+          script('''def slave = []
                  (1..4).each {
                      slave.add("MNTLAB-sbarysevich-child"+it as String)
                  }
