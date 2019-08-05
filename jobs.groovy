@@ -1,7 +1,7 @@
 job('MNTLAB-pluniov-main-build-job') {
   blockOnDownstreamProjects()
   parameters {
-      choiceParam('BRANCH_NAME', ['pluniov (default)', 'master'])
+      choiceParam('BRANCH_NAME', ['pluniov', 'master'])
 
       activeChoiceParam('BUILDS_TRIGGER') {
             description('Available options')
