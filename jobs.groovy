@@ -3,6 +3,7 @@ job("MNTLAB-sbarysevich-master") {
    choiceParam('BRANCH_NAME', ['sbarysevich', 'master',])
    activeChoiceParam('slaves') {
      choiceType('CHECKBOX')
+     description('slaves')
      groovyScript {
           script('''def slave = []
                  (1..4).each {
@@ -35,6 +36,7 @@ job("MNTLAB-sbarysevich-master") {
       job("MNTLAB-sbarysevich-child"+it as String) {
       parameters {
         activeChoiceParam('BRANCH_NAME') {
+          description('Branches')
           choiceType('SINGLE_SELECT')
           groovyScript {
              script('''
