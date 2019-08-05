@@ -2,13 +2,14 @@ job("MNTLAB-sbarysevich-master") {
  parameters {
    choiceParam('BRANCH_NAME', ['sbarysevich', 'master',])
    activeChoiceParam('slaves') {
-     choiceType('SINGLE_SELECT')
+     choiceType('CHECKBOX')
      groovyScript {
           script('''
                  def slave = []
                  (1..4).each {
                      slave.add("MNTLAB-sbarysevich-child"+it as String)
-                 }return slave
+                 }
+              return slave
            ''')
            fallbackScript("error")
       }
@@ -37,7 +38,8 @@ job("MNTLAB-sbarysevich-master") {
         activeChoiceParam('BRANCH_NAME') {
           choiceType('SINGLE_SELECT')
           groovyScript {
-             script('''def gitURL = "https://github.com/MNT-Lab/d192l-module.git"
+             script('''
+                    def gitURL = "https://github.com/MNT-Lab/d192l-module.git"
                     def command = "git ls-remote -h $gitURL"
                 
                     def proc = command.execute()
@@ -50,7 +52,9 @@ job("MNTLAB-sbarysevich-master") {
                 
                     def branches = proc.in.text.readLines().collect {
                         it.replaceAll(/[a-z0-9]*\trefs\\/heads\\//, '')
-                    }''')
+                    }
+                    return branches
+                  ''')
              fallbackScript('"any branche not found"')
           }
         }
