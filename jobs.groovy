@@ -18,6 +18,8 @@ job('MNTLAB-abutsko-main-build-job') {
                     }
                     return jobs
                 ''')
+
+                fallbackScript('"There is no branches"')
             }
         }
     }
