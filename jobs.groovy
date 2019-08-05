@@ -24,3 +24,21 @@ job('MNTLAB-pramanouski-main-build-job') {
     }
   }
 }
+
+
+steps {
+      downstreamParameterized {
+          trigger('$BUILDS_TRIGGER') {
+              block {
+                  buildStepFailure('FAILURE')
+                  failure('FAILURE')
+                  unstable('UNSTABLE')
+              }
+              parameters {
+                predefinedProp('BRANCH_NAME', '$BRANCH_NAME')
+
+             }
+          }
+      }
+  }
+}
