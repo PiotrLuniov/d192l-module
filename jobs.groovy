@@ -11,11 +11,15 @@ job("MNTLAB-mmarkova-main-build-job") {
 def project = 'MNT-Lab/d192l-module'
 def branchApi = new URL("https://api.github.com/repos/${project}/branches")
 def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
-def branchesNames = ['mmarkova']
+def branchesNames = []
 branches.each {
-	if (!('mmarkova'.equals(it.name)))
 		branchesNames.add(it.name)
 }
+def index = 0
+branchesNames.findIndexOf {
+	index = it.equals('mmarkova')
+}
+branchesNames.swap(0, index)
 return branchesNames
           		''')
             }
@@ -35,4 +39,27 @@ return jobs
 	      	}
    		}
 	}
+
+	blockOnDownstreamProjects()
+	
+	steps {
+        downstreamParameterized {
+            trigger('$BUILDS_TRIGGER') {
+                block {
+                	// Fails the build step if the triggered build is worse or equal to the threshold. 
+                    buildStepFailure('FAILURE')
+
+                    // Marks this build as failure if the triggered build is worse or equal to the threshold. 
+                    failure('FAILURE')
+
+                    // Mark this build as unstable if the triggered build is worse or equal to the threshold. 
+                    unstable('UNSTABLE')
+                }
+                parameters {
+                    predefinedProp('BRANCH_NAME', '$BRANCH_NAME')
+                }
+            }
+        }
+    }
+}
 }
