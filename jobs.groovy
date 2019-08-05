@@ -1,12 +1,14 @@
 def STUDENT_NAME = "adalimayeu"
+
 def main_job = "MNTLAB-${STUDENT_NAME}-main-build-job"
 def child_jobs = []
-for (i in 1..2){
+for (i in 1..4){
     child_jobs.add("MNTLAB-${STUDENT_NAME}-child${i}-build-job")
 }
-def child_jobs_for_ACplug = child_jobs.collect {it -> return "\'$it\'"}
+// add quotes for jenkins parser
+def child_jobs_formatted = child_jobs.collect {it -> return "\'$it\'"}
 
-freeStyleJob('MNTLAB-adalimayeu-main-build-job'){
+freeStyleJob("${main_job}"){
     parameters {
         activeChoiceParam('BRANCH_NAME') {
             description('Choose branch name')
@@ -20,18 +22,19 @@ freeStyleJob('MNTLAB-adalimayeu-main-build-job'){
             description('Choose job which will be executed')
             choiceType('CHECKBOX')
             groovyScript {
-                script("return ${child_jobs_for_ACplug}")
+                script("return ${child_jobs_formatted}")
                 fallbackScript('"fallback choice"')
             }
         }
     }
+    blockOnDownstreamProjects()
     steps {
         triggerBuilder {
             configs {
                 blockableBuildTriggerConfig {
                     projects("\$JOBS")
-
                     configs {
+                        currentBuildParameters()
                         predefinedBuildParameters {
                             properties("\$BRANCH_NAME")
                             textParamValueOnNewLine(false)
@@ -44,7 +47,6 @@ freeStyleJob('MNTLAB-adalimayeu-main-build-job'){
                     }
                 }
             }
-
         }
     }
 }
@@ -58,7 +60,8 @@ proc.waitFor()
 def branches = proc.in.text.readLines().collect {
     it.replaceAll(/[a-z0-9]*\trefs\/heads\//, '')
 }
-def branches_for_ACplug = branches.collect {it -> return "\'$it\'"}
+// add quotes for jenkins parser
+def branches_formatted = branches.collect {it -> return "\'$it\'"}
 
 println(branches)
 for (job in child_jobs) {
@@ -68,25 +71,21 @@ for (job in child_jobs) {
                 description('Choose branch name')
                 choiceType('SINGLE_SELECT')
                 groovyScript {
-                    script("return ${branches_for_ACplug}")
+                    script("return ${branches_formatted}")
                     fallbackScript('"fallback choice"')
                 }
             }
         }
-        gitSCM {
-            userRemoteConfigs {
-                userRemoteConfig {
-                    url(gitURL)
-                }
-            }
-            branches {
-                branchSpec {
-                    name("\$BRANCH_NAME")
-                }
-            }
+        scm {
+            github("MNT-Lab/d192l-module", "\$BRANCH_NAME")
         }
         steps {
-            shell('$JENKINS_HOME/workspace/a/script.sh > output.txt')
+            shell('chmod +x script.sh; ' +
+                    './script.sh > output.txt; ' +
+                    'tar czf \${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy output.txt')
+        }
+        publishers {
+            archiveArtifacts("\${BRANCH_NAME}_dsl_script.tar.gz")
         }
     }
 }
