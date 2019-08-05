@@ -3,6 +3,8 @@ def student_name = 'uzubtsou'
 def jobs_number = 4
 
 job("MNTLAB-${student_name}-main-build-job") {
+    blockOnDownstreamProjects()
+
     parameters {
     choiceParam('BRANCH_NAME', ["${student_name} (default)", 'master'], 'branch name')
 
@@ -10,22 +12,23 @@ job("MNTLAB-${student_name}-main-build-job") {
         description('Checkbox options')
         choiceType('CHECKBOX')
         groovyScript {
-            script(''' 
+            script(
+            ''' 
             def jobs = []
-            for (i in 1..4) {
-                jobs.add("MNTLAB-${student_name}-child${i}-build-job")
+            (1..4).each {
+            jobs.add("MNTLAB-${student_name}-child${i}-build-job")
             }
             return jobs
-            ''')
+            '''
+            )
         }
     }
-    }
 
-    blockOnDownstreamProjects()
+    }
 
     steps {
         downstreamParameterized {
-            trigger('$EXECUTE_JOB') {
+            trigger('${EXECUTE_JOB}') {
                 block {
                     buildStepFailure('FAILURE')
                     failure('FAILURE')
@@ -37,7 +40,6 @@ job("MNTLAB-${student_name}-main-build-job") {
             }
         }
     }
-
 }
 
 
@@ -50,7 +52,7 @@ for (i in 1..4) {
         parameters {
             activeChoiceParam('BRANCH_NAME') {
                 description('Choose jobs which will be executed')
-                choiceType('CHECKBOX')
+                choiceType('SINGLE_SELECT')
 
                 groovyScript {
                     script('''
@@ -69,19 +71,20 @@ for (i in 1..4) {
                 }
             }
         }
+
         scm {
             git {
                 remote {
                     name('branch')
                     url('https://github.com/MNT-Lab/d192l-module.git')
                 }
-                branch('${BRANCH_NAME}')
+                branch('$BRANCH_NAME')
             }
         }
 
         steps {
             shell('sh script.sh > output.txt')
-            shell('tar czf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy output.txt')
+            shell('tar -czf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy output.txt')
         }
 
         publishers {
