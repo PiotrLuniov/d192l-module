@@ -13,7 +13,7 @@ job('MNTLAB-iyaruk-main-build-job') {
 	         (1..4).each {
 	         list.add("MNTLAB-iyaruk-child${it}-build-job")
        }
-	      return child
+	      return list
             ''')
 
         }
