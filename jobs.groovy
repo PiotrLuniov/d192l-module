@@ -20,23 +20,19 @@ job("MNTLAB-mmarkova-main-build-job") {
           		''')
             }
         }
-    }
-}
 
-job("MNTLAB-mmarkova-main-build-job") {
-  parameters {
-          activeChoiceParam('JOBS') {
-          description('Allows user choose from multiple choices')
-          choiceType('CHECKBOX')
-          groovyScript {
-              script('''
-              	    def jobs = []
-                    4.times {
-                        jobs.add("MNTLAB-mmarkova-child${it+1}-build-job")
-                    }
-                    return jobs
-              	''')
-          	}
-      	}
-   	}
+		activeChoiceParam('JOBS') {
+			description('Allows user choose from multiple choices')
+			choiceType('CHECKBOX')
+			groovyScript {
+			  script('''
+			  	    def jobs = []
+			        4.times {
+			            jobs.add("MNTLAB-mmarkova-child${it+1}-build-job")
+			        }
+			        return jobs
+			  	''')
+	      	}
+   		}
+	}
 }
