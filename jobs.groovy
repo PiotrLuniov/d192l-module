@@ -27,7 +27,7 @@ job('MNTLAB-pluniov-main-build-job') {
                     unstable('UNSTABLE')
                 }
                 parameters {
-                  predefinedProp('Branch_name', '$BRANCH_NAME')
+                  predefinedProp('BRANCH_NAME', '$BRANCH_NAME')
 
                }
             }
