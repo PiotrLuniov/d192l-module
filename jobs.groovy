@@ -8,7 +8,7 @@ for (i in 1..4){
 // add quotes for jenkins parser
 def child_jobs_formatted = child_jobs.collect {it -> return "\'$it\'"}
 
-job("MNTLAB-${STUDENT_NAME}-main-build-job"){
+job("${main_job}"){
     parameters {
         activeChoiceParam('BRANCH_NAME') {
             description('Choose branch name')
