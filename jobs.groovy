@@ -8,7 +8,7 @@ job("EPBYMINW9010/MNTLAB-${student}-main-build-job"){
       description('Allows user choose from multiple choices')
       filterable()
       choiceType('CHECKBOX')
-      for (i in 1..3) { 
+      for (i in 1..4) { 
         groovyScript {
           script('return["MNTLAB-hkanonik-child1-build-job", "MNTLAB-hkanonik-child2-build-job", "MNTLAB-hkanonik-child3-build-job"]')
           fallbackScript('"fallback choice"')
@@ -16,7 +16,7 @@ job("EPBYMINW9010/MNTLAB-${student}-main-build-job"){
       }
     }
   }
-  for (i in 1..3) {
+  for (i in 1..4) {
     publishers {
       downstream("MNTLAB-${student}-child$i-build-job", 'SUCCESS')
     }
@@ -24,7 +24,7 @@ job("EPBYMINW9010/MNTLAB-${student}-main-build-job"){
   blockOnDownstreamProjects()
 }
 
-for (i in 1..3) {
+for (i in 1..4) {
   job("EPBYMINW9010/MNTLAB-${student}-child$i-build-job") {
     scm {
       git{
@@ -49,7 +49,7 @@ listView("EPBYMINW9010/${student}") {
   filterExecutors()
   jobs {
     name("MNTLAB-${student}-main-build-job")
-    for (i in 1..3) {name("MNTLAB-${student}-child$i-build-job")}
+    for (i in 1..4) {name("MNTLAB-${student}-child$i-build-job")}
   }
   columns{
     status()
