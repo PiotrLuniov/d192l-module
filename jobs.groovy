@@ -37,6 +37,7 @@ job('MNTLAB-abutsko-child1-build-job') {
                     def gitURL = "https://github.com/MNT-Lab/d192l-module.git"
                     def command = "git ls-remote -h $gitURL"
                     def proc = command.execute()
+                    proc.waitFor()
 
                     def branches = proc.in.text.readLines().collect{
                         it.split('/')[-1]
