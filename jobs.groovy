@@ -8,7 +8,7 @@ for (i in 1..4){
 // add quotes for jenkins parser
 def child_jobs_formatted = child_jobs.collect {it -> return "\'$it\'"}
 
-freeStyleJob("${main_job}"){
+job("${main_job}"){
     parameters {
         activeChoiceParam('BRANCH_NAME') {
             description('Choose branch name')
@@ -57,8 +57,8 @@ def branches = proc.in.text.readLines().collect {
 def branches_formatted = branches.collect {it -> return "\'$it\'"}
 
 //println(branches)
-for (job in child_jobs) {
-    freeStyleJob("${job}"){
+for (j in child_jobs) {
+    job("${j}"){
         parameters {
             activeChoiceParam('BRANCH_NAME') {
                 description('Choose branch name')
