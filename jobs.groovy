@@ -1,5 +1,7 @@
 job('MNTLAB-kkaminski-main-build-job') {
-    
+   
+  blockOnDownstreamProjects()
+  
   parameters {
            
       choiceParam('BRANCH_NAME', ['kkaminski (default)', 'master'])
@@ -23,7 +25,36 @@ job('MNTLAB-kkaminski-main-build-job') {
     
     }
   }
+  
+  scm {
+        git {
+            remote {
+                name('repo-branch')
+                url('https://github.com/MNT-Lab/d192l-module.git')
+            }
+          
+            branch("\${BRANCH_NAME}")
+       
+    }
+  }
+  
+  steps {
+        downstreamParameterized {
+            trigger('BUILDS_TRIGGER') {
+                block {
+                    buildStepFailure('FAILURE')
+                    failure('FAILURE')
+                    unstable('UNSTABLE')
+                }
+                parameters {
+                  predefinedProp('Branch_name', '${BRANCH_NAME}')
+  
+               }
+            }
+        }
+  }
 }
+              
 
 for(i in 1..4) {
   job("MNTLAB-kkaminski-child${i}-build-job") {
@@ -44,7 +75,7 @@ for(i in 1..4) {
              proc.waitFor()              
 
              def branches = proc.in.text.readLines().collect { 
-                 it.replaceAll(/[a-z0-9]*\trefs\\/heads\\//, '') 
+                 it.replaceAll(/[a-z0-9]*\trefs\\/heads\\//,'') 
              }
 
            return branches
@@ -54,5 +85,6 @@ for(i in 1..4) {
          }
        }
      }
-   }
- }
+    
+    }
+}
