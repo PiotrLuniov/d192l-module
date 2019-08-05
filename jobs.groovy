@@ -14,12 +14,25 @@ job('MNTLAB-abutsko-main-build-job') {
                 script('''
                     def jobs = []
                     (1..4).each {
-                        list.add("MNTLAB-abutsko-child${it}-build-job")
+                        jobs.add("MNTLAB-abutsko-child${it}-build-job")
                     }
                     return jobs
                 ''')
             }
         }
+
+        scm {
+            git {
+                remote {
+                    name('branch')
+                    url('https://github.com/MNT-Lab/d192l-module.git')
+                }
+                branch("${BRANCH_NAME}")
+            }
+        }
+
+        blockOnDownstreamProjects()
+
     }
 }
 
