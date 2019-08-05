@@ -41,7 +41,7 @@ return jobs
 	}
 
 	blockOnDownstreamProjects()
-	
+
 	steps {
         downstreamParameterized {
             trigger('$BUILDS_TRIGGER') {
@@ -61,5 +61,4 @@ return jobs
             }
         }
     }
-}
 }
