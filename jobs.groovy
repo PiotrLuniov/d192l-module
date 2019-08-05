@@ -71,9 +71,15 @@ scm {
     git('https://github.com/MNT-Lab/d192l-module.git', '$BRANCH_NAME')
 }
 steps {
-shell {
- command("chmod +x script.sh  &&  ./script.sh > output.txt")
+  shell {
+   command('chmod +x script.sh  &&  ./script.sh > output.txt && tar czvf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy')
+  }
 }
+publishers {
+  archiveArtifacts {
+      pattern('${BRANCH_NAME}_dsl_script.tar.gz')
+      onlyIfSuccessful()
+  }
 }
 }
 }
