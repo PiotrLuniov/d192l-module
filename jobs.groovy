@@ -81,7 +81,7 @@ for ( i in (1..4) ) {
         steps {
             shell('sh script.sh > output.txt')
 
-            shell('tar czf $BRANCH_NAME_dsl_script.tar.gz jobs.groovy')
+            shell('tar czf "$BRANCH_NAME_dsl_script.tar.gz" jobs.groovy')
         }
 
         publishers {
