@@ -13,7 +13,7 @@ job('MNTLAB-abutsko-main-build-job') {
             choiceType('CHECKBOX')
             groovyScript {
                 script('''
-                    [
+                    return [
                         "MNTLAB-abutsko-child1-build-job",
                         "MNTLAB-abutsko-child2-build-job",
                         "MNTLAB-abutsko-child3-build-job",
@@ -25,21 +25,20 @@ job('MNTLAB-abutsko-main-build-job') {
     }
 }
 
-/*
-        activeChoiceParam('EXECUTED_JOBS') {
-            description('Choose jobs which will be executed')
-            filterable()
-            choiceType('CHECKBOX')
+job('MNTLAB-abutsko-child1-build-job') {
+    activeChoiceParam('BRANCH_NAME') {
+        description('Choose jobs which will be executed')
+        choiceType('SINGLE_SELECT')
 
-            groovyScript {
-                script('''
-                    def branches = "git ls-remote --heads --quiet | awk -F / '{print $NF}'".execute()
-                    listOfBranches = branches.split('\n').collect{ it as String }
+        groovyScript {
+            script('''
+                def branches = "git ls-remote --heads --quiet | awk -F / '{print $NF}'".execute()
+                def listOfBranches = branches.text.split('\n').collect{ it as String }
 
-                    return listOfBranches
-                ''')
+                return listOfBranches
+            ''')
 
-                fallbackScript('"There is no branches"')
-            }
+            fallbackScript('"There is no branches"')
         }
-*/
+    }
+}
