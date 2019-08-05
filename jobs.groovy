@@ -55,7 +55,7 @@ def branches = proc.in.text.readLines().collect {
 // add quotes for jenkins parser
 def branches_formatted = branches.collect {it -> return "\'$it\'"}
 
-println(branches)
+//println(branches)
 for (job in child_jobs) {
     freeStyleJob("${job}"){
         parameters {
