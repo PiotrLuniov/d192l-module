@@ -29,7 +29,7 @@ return jobs
 
 	steps {
 		downstreamParameterized {
-			trigger("$JOBS") {
+			trigger("\$JOBS") {
 				block {
 					buildStepFailure('FAILURE')
 					failure('FAILURE')
