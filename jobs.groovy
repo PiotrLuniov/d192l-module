@@ -44,7 +44,7 @@ return jobs
 
 
 // part 2: child jobs execute
-for i in (1..4) {
+1.step 5, 1, {
     job("MNTLAB-mmarkova-child${i}-build-job") {
         
 	  	parameters {
