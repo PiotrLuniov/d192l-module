@@ -29,7 +29,7 @@ return branches
                 script('''
 def myList = []
 for (i in 1..4) {
-myList.add("MNT-LAB-hbledai-childe-"+ it)
+myList.add("MNT-LAB-hbledai-childe-"+ i)
 }
 return myList
 ''')
@@ -38,12 +38,14 @@ return myList
     }
     steps {
         shell('''
+rm -rf MNT-LAB*
 childes=$(echo $CHECK_BOXES | tr "," " ")
 
 for child in $childes
 do
     echo 'BRANCH=$BRANCH' > $child
 done
+echo 'BRANCH=$BRANCH' > master
 ''')
         for (i in 1..4) { 
           downstreamParameterized {
@@ -52,9 +54,16 @@ done
                 parameters {
                 propertiesFile("MNT-LAB-hbledai-childe-"+ i,  failTriggerOnMissing = true)}
  
-            }}
-        }
+            }}}  
+        downstreamParameterized {
+            trigger("master") {
+
+                parameters {
+                propertiesFile("MNT-LAB-hbledai-childe-"+ i,  failTriggerOnMissing = true)}
+ 
+            }}}   
     }
+    
 }
 for (i in 1..4) {
     job("MNT-LAB-hbledai-childe-"+ i){
@@ -62,13 +71,16 @@ for (i in 1..4) {
           stringParam('BRANCH')
         }
          scm {
-        github("MNT-Lab/d192l-module.git", '$BRANCH' )
+        github("MNT-Lab/d192l-module", '$BRANCH' )
     }
         steps{
         shell('''
+
+chmod +x script.sh
 ./script.sh > output.txt
-tar czvf $BRANCH_dsl_script.tar.gz jobs.groovy
-''')}  
+tar czvf ${WORKSPACE}/${BRANCH}_dsl_script.tar.gz jobs.groovy
+''')}
+         publishers {
+             archiveArtifacts('*_dsl_script.tar.gz')}
     }
 }
-
