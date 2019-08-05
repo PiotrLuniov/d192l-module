@@ -1,25 +1,23 @@
 job("MNTLAB-mmarkova-main-build-job") {
-	properties(
-      	parameters(
-	        activeChoiceParam('BRANCH_NAME') {
-	            description('Allows user choose from multiple choices')
-	            filterable()
-	            choiceType('SINGLE_SELECT')
-	            groovyScript {
-	                script('''
-						def project = 'MNT-Lab/d192l-module'
-						def branchApi = new URL("https://api.github.com/repos/${project}/branches")
-						def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
-						def branchesNames = []
-						branches.each {
-							branchesNames.add("${it.name}")
-						}
-						return branchesNames
-              	''')
-	            }
-	        }
-        )
-    )
+  	parameters {
+        activeChoiceParam('BRANCH_NAME') {
+            description('Allows user choose from multiple choices')
+            filterable()
+            choiceType('SINGLE_SELECT')
+            groovyScript {
+                script('''
+					def project = 'MNT-Lab/d192l-module'
+					def branchApi = new URL("https://api.github.com/repos/${project}/branches")
+					def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
+					def branchesNames = []
+					branches.each {
+						branchesNames.add("${it.name}")
+					}
+					return branchesNames
+          	''')
+            }
+        }
+    }
 }
 
 job("MNTLAB-mmarkova-main-build-job") {
