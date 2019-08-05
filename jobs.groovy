@@ -1,8 +1,11 @@
+4.times {
+    job("MNTLAB-mmarkova-child${it+1}-build-job")
+}
+
 job("MNTLAB-mmarkova-main-build-job") {
   	parameters {
         activeChoiceParam('BRANCH_NAME') {
             description('Allows user choose from multiple choices')
-            filterable()
             choiceType('SINGLE_SELECT')
             groovyScript {
                 script('''
@@ -14,7 +17,7 @@ job("MNTLAB-mmarkova-main-build-job") {
 						branchesNames.add("${it.name}")
 					}
 					return branchesNames
-          	''')
+          		''')
             }
         }
     }
@@ -33,7 +36,7 @@ job("MNTLAB-mmarkova-main-build-job") {
                     }
                     return jobs
               	''')
-          }
-      }
-   }
+          	}
+      	}
+   	}
 }
