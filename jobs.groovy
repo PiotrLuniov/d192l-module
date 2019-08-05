@@ -9,7 +9,7 @@ job('MNTLAB-iyaruk-main-build-job') {
             
             groovyScript {
                 script('''
-                 def child=[]
+                 def list=[]
 	         (1..4).each {
 	         list.add("MNTLAB-iyaruk-child${it}-build-job")
        }
