@@ -57,10 +57,12 @@ return jobs
 	def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
 	def branchesNames = []
 	def index = 0
-	branches.eachWithIndex { elem, ind ->
+	branches.each { elem ->
+		branchesNames.add("${elem.name}")
+	}
+	branchesNames.eachWithIndex { elem, ind ->
     	if ("${elem}" == 'mmarkova') 
       		index = ind
-		branchesNames.add("${elem}")
 	}
 	branchesNames.swap(0, index)
 	return branchesNames
