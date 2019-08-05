@@ -8,7 +8,7 @@ job('MNTLAB-abutsko-main-build-job') {
         // But I prefer choiceParam because we should have only 2 predefined choices
         // stringParam('BRANCH_NAME', 'abutsko', 'Choose a branch name')
         choiceParam('BRANCH_NAME', ['abutsko', 'master'], 'Choose a branch name')
-        activeChoiceParam(EXECUTED_JOBS') {
+        activeChoiceParam('EXECUTED_JOBS') {
             description('Choose jobs which will be executed')
             choiceType('CHECKBOX')
             groovyScript {
