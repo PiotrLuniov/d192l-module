@@ -21,7 +21,7 @@ job(mainjob) {
 	steps {
 		shell("git ls-remote --heads  https://github.com/MNT-Lab/d192l-module.git")
         shell("chmod +x script.sh")
-        shell("echo $(./script.sh)")
+        shell("echo \$(./script.sh)")
 	}
 }
 
