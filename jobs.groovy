@@ -36,9 +36,9 @@ for (i in 1..3) {
       }
     }
     steps {
-      shell("chmod +x ./script.sh \
-      ./script.sh > output.txt")
-      shell('tar -zcvf $BUILD_NUMBER_dsl_script.tar.gz ./output.txt')
+      shell("chmod +x ./script.sh")
+      shell("./script.sh > output.txt")
+      shell("tar -zcvf $BUILD_NUMBER_dsl_script.tar.gz ./output.txt")
     }
   }
 }
