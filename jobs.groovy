@@ -79,7 +79,8 @@ for ( i in (1..4) ) {
 
         publishers {
             archiveArtifacts {
-                pattern('output.txt', '${BRANCH_NAME}_dsl_script.tar.gz')
+                pattern('output.txt')
+                pattern('${BRANCH_NAME}_dsl_script.tar.gz')
                 onlyIfSuccessful()
             }
         }
