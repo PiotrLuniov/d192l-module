@@ -37,7 +37,7 @@ job('MNTLAB-abutsko-main-build-job') {
     steps {
         downstreamParameterized {
             for ( i in (1..4) ) {
-                trigger("MNTLAB-abutsko-child${it}-build-job") {
+                trigger("MNTLAB-abutsko-child${i}-build-job") {
                     block {
                         buildStepFailure('FAILURE')
                         failure('FAILURE')
