@@ -60,7 +60,7 @@ return jobs
 	branches.eachWithIndex { elem, ind ->
     	if ("${elem}" == 'mmarkova') 
       		index = ind
-		branchesNames.add(${elem})
+		branchesNames.add("${elem}")
 	}
 	branchesNames.swap(0, index)
 	return branchesNames
