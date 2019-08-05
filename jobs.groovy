@@ -72,7 +72,9 @@ for (job in child_jobs) {
             github('MNT-Lab/d192l-module', '$BRANCH_NAME')
         }
         steps {
-            shell('chmod +x script.sh && ./script.sh > output.txt && tar czf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy output.txt')
+            shell('chmod +x script.sh; ' +
+                    './script.sh > output.txt; ' +
+                    'tar czf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy output.txt')
         }
         publishers {
             archiveArtifacts {
