@@ -89,6 +89,7 @@ return branches
 		publishers {
 			archiveArtifacts {
 				pattern("output.txt")
+				pattern("\${BRANCH_NAME}_dsl_script.tar.gz")
 				allowEmpty(false)
 				onlyIfSuccessful(false)
 				fingerprint(false)
