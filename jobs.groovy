@@ -1,6 +1,6 @@
 def student = "ashamchonak"
 
-job("MNTLAB-{student}-main-build-job") {
+job("MNTLAB-{{ student }}-main-build-job") {
 	description()
 	keepDependencies(false)
 	parameters {
