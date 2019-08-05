@@ -13,11 +13,11 @@ job(mainjob) {
 	        	choiceType('CHECKBOX')
 	        	groovyScript {
         	  		script('''
-                    			def jobs = []
-                   			(1..4).each {
-                        		jobs.add("MNTLAB-" + student + "-child${it}-build-job")
-                    			}
-			                return jobs
+def jobs = []
+(1..4).each {
+  jobs.add("MNTLAB-ashamchonak-child${it}-build-job")
+}
+return jobs
                 			'''
 				)
 	            		fallbackScript('"fallback choice"')
@@ -25,7 +25,6 @@ job(mainjob) {
 		}
 		//branch name
 		choiceParam("BRANCH_NAME", [student, "master"])
-		
 	}	
 	
 	steps {
