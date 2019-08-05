@@ -12,12 +12,11 @@ job('MNTLAB-abutsko-main-build-job') {
             choiceType('CHECKBOX')
             groovyScript {
                 script('''
-                    return [
-                        "MNTLAB-abutsko-child1-build-job",
-                        "MNTLAB-abutsko-child2-build-job",
-                        "MNTLAB-abutsko-child3-build-job",
-                        "MNTLAB-abutsko-child4-build-job"
-                    ]
+                    def jobs = []
+                    (1..4).each {
+                        list.add("MNTLAB-abutsko-child${it}-build-job")
+                    }
+                    return jobs
                 ''')
             }
         }
