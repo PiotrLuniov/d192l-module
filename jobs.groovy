@@ -65,7 +65,7 @@ job("MNTLAB-sbarysevich-master") {
             remote {
               url('https://github.com/MNT-Lab/d192l-module.git')
             }
-            branch('*/$')
+            branch('*/$BRANCH_NAME')
           }
         }
         
