@@ -1,13 +1,17 @@
+def student=ashamchonak
 
-job("topic10") {
+job("MNTLAB-{student}-main-build-job") {
 	description()
 	keepDependencies(false)
+	parameters {
+		stringParam("BRANCH_NAME", "{student}", "")
+	}
 	scm {
 		git {
 			remote {
 				github("MNT-Lab/d192l-module", "https")
 			}
-			branch("*/ashamchonak")
+			branch("*/{student}")
 		}
 	}
 	disabled(false)
@@ -19,3 +23,23 @@ job("topic10") {
 	}
 }
 
+job("MNTLAB-{student}-child1-build-job") {
+	description()
+	keepDependencies(false)
+	disabled(false)
+	concurrentBuild(false)
+	steps {
+		shell("""git ls-remote --heads  https://github.com/MNT-Lab/d192l-module.git
+
+          ./script.sh > output.txt""")
+	}
+	publishers {
+		archiveArtifacts {
+			pattern("output.txt,")
+			allowEmpty(false)
+			onlyIfSuccessful(false)
+			fingerprint(false)
+			defaultExcludes(true)
+		}
+	}
+}
