@@ -81,7 +81,7 @@ for(i in 1..4) {
  scm {
        git {
            remote {
-               name('repo-branch')
+               name('d192l-module')
                url('https://github.com/MNT-Lab/d192l-module.git')
             }
           
