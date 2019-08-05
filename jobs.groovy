@@ -54,17 +54,19 @@ echo 'BRANCH=$BRANCH' > master
                 parameters {
                 propertiesFile("MNT-LAB-hbledai-childe-"+ i,  failTriggerOnMissing = true)}
  
-            }}}  
+            }}
         downstreamParameterized {
             trigger("master") {
 
                 parameters {
                 propertiesFile("MNT-LAB-hbledai-childe-"+ i,  failTriggerOnMissing = true)}
  
-            }}}   
+            }}  
     }
     
-}
+    }}
+    
+    
 for (i in 1..4) {
     job("MNT-LAB-hbledai-childe-"+ i){
         parameters {
