@@ -4,7 +4,7 @@ job('MNTLAB-kkaminski-main-build-job') {
   
   parameters {
            
-      choiceParam('BRANCH_NAME', ['kkaminski (default)', 'master'])
+      choiceParam('BRANCH_NAME', ['kkaminski', 'master'])
        
       activeChoiceParam('BUILDS_TRIGGER') {
             description('Available options')
