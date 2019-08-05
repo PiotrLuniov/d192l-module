@@ -8,7 +8,24 @@ job('MNTLAB-abutsko-main-build-job') {
         // But I prefer choiceParam because we should have only 2 predefined choices
         // stringParam('BRANCH_NAME', 'abutsko', 'Choose a branch name')
         choiceParam('BRANCH_NAME', ['abutsko', 'master'], 'Choose a branch name')
-        
+        activeChoiceParam(EXECUTED_JOBS') {
+            description('Choose jobs which will be executed')
+            choiceType('CHECKBOX')
+            groovyScript {
+                script('''
+                    [
+                        "MNTLAB-abutsko-child1-build-job",
+                        "MNTLAB-abutsko-child2-build-job",
+                        "MNTLAB-abutsko-child3-build-job",
+                        "MNTLAB-abutsko-child4-build-job"
+                    ]
+                ''')
+            }
+        }
+    }
+}
+
+/*
         activeChoiceParam('EXECUTED_JOBS') {
             description('Choose jobs which will be executed')
             filterable()
@@ -19,11 +36,10 @@ job('MNTLAB-abutsko-main-build-job') {
                     def branches = "git ls-remote --heads --quiet | awk -F / '{print $NF}'".execute()
                     listOfBranches = branches.split('\n').collect{ it as String }
 
-                    println listOfBranches
+                    return listOfBranches
                 ''')
 
                 fallbackScript('"There is no branches"')
             }
         }
-    }
-}
+*/
