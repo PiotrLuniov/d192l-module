@@ -11,9 +11,9 @@ job("MNTLAB-mmarkova-main-build-job") {
 def project = 'MNT-Lab/d192l-module'
 def branchApi = new URL("https://api.github.com/repos/${project}/branches")
 def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
-def branchesNames = ["mmarkova"]
+def branchesNames = ['mmarkova']
 branches.each {
-	if (!("mmarkova".equals(it.name)))
+	if (!('mmarkova'.equals(it.name)))
 		branchesNames.add(it.name)
 }
 return branchesNames
