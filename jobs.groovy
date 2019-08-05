@@ -6,18 +6,18 @@ job(mainjob) {
 	description()
 	keepDependencies(false)
 	parameters {
-        activeChoiceParam('CHOICE-1') {
-        description('Allows user choose from multiple choices')
-        filterable()
-        choiceType('SINGLE_SELECT')
-        groovyScript {
-          	script('["choice1", "choice2"]')
-            fallbackScript('"fallback choice"')
-            }
+        	activeChoiceParam('JOBS') {
+	        	description('Choose branch name')
+	        	//filterable()
+	        	choiceType('CHECKBOX')
+	        	groovyScript {
+        	  		script('["choice1", "choice2"]')
+	            		fallbackScript('"fallback choice"')
+        	    	}
 		}
-		stringParam("BRANCH_NAME", student, "")
-		
-	}
+	choiceParam("BRANCH_NAME", [student, "master"], "")
+	}	
+
 	scm {
 		git {
 			remote {
