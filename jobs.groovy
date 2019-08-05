@@ -20,19 +20,35 @@ job('MNTLAB-abutsko-main-build-job') {
                 ''')
             }
         }
+    }
 
-        scm {
-            git {
-                remote {
-                    name('branch')
-                    url('https://github.com/MNT-Lab/d192l-module.git')
+    blockOnDownstreamProjects()
+
+    scm {
+        git {
+            remote {
+                name('branch')
+                url('https://github.com/MNT-Lab/d192l-module.git')
+            }
+            branch('$BRANCH_NAME')
+        }
+    }
+
+    steps {
+        downstreamParameterized {
+            jobs.each {
+                trigger(it) {
+                    block {
+                        buildStepFailure('FAILURE')
+                        failure('FAILURE')
+                        ustable('USTABLE')
+                    }
+                    parameters {
+                        predefinedProp('BRANCH_NAME', '$BRANCH_NAME')
+                    }
                 }
-                branch("\$BRANCH_NAME")
             }
         }
-
-        blockOnDownstreamProjects()
-
     }
 }
 
