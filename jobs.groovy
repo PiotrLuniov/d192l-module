@@ -35,7 +35,7 @@ job('MNTLAB-abutsko-child1-build-job') {
             groovyScript {
                 script('''
                     def branches = "git ls-remote --heads --quiet | awk -F / '{print $NF}'".execute()
-                    def listOfBranches = branches.text.split('\n').collect{ it as String }
+                    def listOfBranches = branches.text.split('\\n').collect{ it as String }
 
                     return listOfBranches
                 ''')
