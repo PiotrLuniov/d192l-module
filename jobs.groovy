@@ -2,6 +2,7 @@ def student = 'ymlechka'
 def mainJob = 'MNTLAB-' + student + '-main-build-job'
 //def childJob = 'MNTLAB-' + student + '-child1-build-job'
 
+
 job(mainJob) {
 	description()
 	keepDependencies(false)
@@ -14,7 +15,7 @@ job(mainJob) {
 				script('''
 def jobs = []
 (1..4).each {
-  jobs.add("MNTLAB-ymlechka-child${it}-build-job")
+  jobs.add("MNTLAB-"student"-child${it}-build-job")
 }
 return jobs
                 			'''
