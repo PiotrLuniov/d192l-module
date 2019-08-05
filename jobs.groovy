@@ -10,15 +10,15 @@ def child_jobs_formatted = child_jobs.collect {it -> return "\'$it\'"}
 
 freeStyleJob("${main_job}"){
     parameters {
-//        activeChoiceParam('BRANCH_NAME') {
-//            description('Choose branch name')
-//            choiceType('SINGLE_SELECT')
-//            groovyScript {
-//                script('return [\'adalimayeu\', \'master\']')
-//                fallbackScript('"fallback choice"')
-//            }
-//        }
-        choiceParam('BRANCH_NAME', ['adalimayeu', 'master'], 'Choose branch name')
+        activeChoiceParam('BRANCH_NAME') {
+            description('Choose branch name')
+            choiceType('SINGLE_SELECT')
+            groovyScript {
+                script('return [\'adalimayeu\', \'master\']')
+                fallbackScript('"fallback choice"')
+            }
+        }
+//        choiceParam('BRANCH_NAME', ['adalimayeu', 'master'], 'Choose branch name')
         activeChoiceParam('JOBS') {
             description('Choose job which will be executed')
             choiceType('CHECKBOX')
