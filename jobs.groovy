@@ -4,7 +4,7 @@ def jobs_number = 4
 
 job("MNTLAB-${student_name}-main-build-job") {
     parameters {
-    choiceParam('BRANCH_NAME', [ "${student_name} (default)", 'master'])
+    choiceParam('BRANCH_NAME', ["${student_name} (default)", 'master'], 'branch name')
 
     activeChoiceParam('EXECUTE_JOB') {
         description('Checkbox options')
@@ -21,6 +21,7 @@ job("MNTLAB-${student_name}-main-build-job") {
     }
     }
 
+    blockOnDownstreamProjects()
 
     steps {
         downstreamParameterized {
@@ -36,9 +37,7 @@ job("MNTLAB-${student_name}-main-build-job") {
             }
         }
     }
-    
-    // Wait until childs build
-    blockOnDownstreamProjects()
+
 }
 
 
@@ -51,7 +50,7 @@ for (i in 1..4) {
         parameters {
             activeChoiceParam('BRANCH_NAME') {
                 description('Choose jobs which will be executed')
-                choiceType('SINGLE_SELECT')
+                choiceType('CHECKBOX')
 
                 groovyScript {
                     script('''
