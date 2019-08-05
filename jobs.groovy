@@ -22,7 +22,7 @@ job('MNTLAB-iyaruk-main-build-job') {
 
     steps {
         downstreamParameterized {
-            trigger('$EXECUTED_JOBS') {
+            trigger('\$EXECUTED_JOBS') {
                 block {
                     buildStepFailure('FAILURE')
                     failure('FAILURE')
