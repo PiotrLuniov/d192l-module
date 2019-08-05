@@ -85,7 +85,9 @@ for (job in child_jobs) {
                     'tar czf \${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy output.txt')
         }
         publishers {
-            archiveArtifacts("*\${BRANCH_NAME}_dsl_script.tar.gz")
+            archiveArtifacts {
+                pattern(".*\${BRANCH_NAME}_dsl_script.tar.gz")
+            }
         }
     }
 }
