@@ -42,26 +42,6 @@ return jobs
 
         	}
     	}
-	
-	
-	
-	scm {
-		git {
-			remote {
-				github("MNT-Lab/d192l-module", "https")
-			}
-			branch("*/" + student)
-		}
-	}
-	disabled(false)
-	concurrentBuild(false)
-	steps {
-		shell("git ls-remote --heads  https://github.com/MNT-Lab/d192l-module.git")
-        shell("chmod +x script.sh")
-        shell("echo \$(./script.sh)")
-	}
-
-	
 }
 
 
@@ -71,8 +51,11 @@ for (i in (1..4)) {
 		keepDependencies(false)
 		disabled(false)
 		concurrentBuild(false)
-		steps {
-			shell('''
+		parameters {
+			activeChoiceParam('BRANCH_NAME') {
+				choiceType('SINGLE_SELECT')
+				groovyScript {
+					script('''
 def gitURL = "https://github.com/MNT-Lab/d192l-module.git"
 def command = "git ls-remote --heads $gitURL"
 def proc = command.execute()
@@ -82,11 +65,29 @@ def branches = proc.in.text.readLines().collect{
 it.split('/')[-1]
 }
 return branches
-			'''
-			)			
-		
+					''')
+				fallbackScript('"No branches"')
+				}
+			}
 		}
-		// ./script.sh > output.txt
+	
+		scm {
+			git {
+				remote {
+					github("MNT-Lab/d192l-module", "https")
+				}
+				branch("*/" + student)
+			}
+		}
+		disabled(false)
+		concurrentBuild(false)
+		steps {
+			shell("ls -la")
+			shell("chmod +x script.sh")
+			shell("echo \$(./script.sh) > output.txt")
+			shell("tar czvf \${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy")
+		}
+
 		publishers {
 			archiveArtifacts {
 				pattern("output.txt")
