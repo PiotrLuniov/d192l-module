@@ -11,7 +11,6 @@ job("EPBYMINW9010/MNTLAB-${student}-main-build-job"){
       for (i in 1..3) { 
         groovyScript {
           script('return["MNTLAB-hkanonik-child1-build-job", "MNTLAB-hkanonik-child2-build-job", "MNTLAB-hkanonik-child3-build-job"]')
-          // script(for (i in 1..3) {return['MNTLAB-${student}-child$i-build-job']})
           fallbackScript('"fallback choice"')
         }
       }
@@ -37,7 +36,7 @@ for (i in 1..3) {
       }
     }
     steps {
-      shell("chmod +x ./script.sh \
+      shell("sudo chmod +x ./script.sh \
       ./script.sh > output.txt")
       shell('tar -zcvf $BUILD_NUMBER_dsl_script.tar.gz ./output.txt')
     }
