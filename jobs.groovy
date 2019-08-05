@@ -9,7 +9,6 @@ job(mainjob) {
         	//jobs execute
 		activeChoiceParam('JOBS') {
 	        	description('Choose execute jobs name')
-	        	//filterable()
 	        	choiceType('CHECKBOX')
 	        	groovyScript {
         	  		script('''
@@ -25,11 +24,13 @@ return jobs
 		}
 		//branch name
 		choiceParam("BRANCH_NAME", [student, "master"])
-	}	
+	}
+	
+	blockOnDownstreamProjects()
 	
 	steps {
         	downstreamParameterized {
-          		trigger('$JOBS') {
+          		trigger("\$JOBS") {
                 		block {
                     			buildStepFailure('FAILURE')
                     			failure('FAILURE')
@@ -39,13 +40,10 @@ return jobs
                     			predefinedProp('BRANCH_NAME', '$BRANCH_NAME')
                 		}
             		}
-            		trigger('Project2') {
-                		parameters {
-                    			currentBuild()
-                		}
-            		}
+
         	}
     	}
+	
 	
 	
 	scm {
