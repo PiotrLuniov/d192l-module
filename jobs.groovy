@@ -25,18 +25,8 @@ job('MNTLAB-kkaminski-main-build-job') {
     
     }
   }
+
   
-  scm {
-        git {
-            remote {
-                name('repo-branch')
-                url('https://github.com/MNT-Lab/d192l-module.git')
-            }
-          
-            branch("\${BRANCH_NAME}")
-       
-    }
-  }
   
   steps {
         downstreamParameterized {
@@ -87,4 +77,23 @@ for(i in 1..4) {
      }
     
     }
+  
+ scm {
+       git {
+           remote {
+               name('repo-branch')
+               url('https://github.com/MNT-Lab/d192l-module.git')
+            }
+          
+           branch("\${BRANCH_NAME}")
+        }
+   }
+  
+  steps {
+            shell('./script.sh > output.txt')
+
+            shell('tar czf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy')
+        }
+
+  
 }
