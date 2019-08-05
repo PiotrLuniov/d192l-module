@@ -1,6 +1,5 @@
 def student = "ashamchonak"
 def mainjob = "MNTLAB-" + student + "-main-build-job"
-def childjob = "MNTLAB-" + student + "-child1-build-job"
 
 job(mainjob) {
 	description()
@@ -61,29 +60,47 @@ return jobs
         shell("chmod +x script.sh")
         shell("echo \$(./script.sh)")
 	}
-	
-	
-	
+
 	
 }
 
-job(childjob) {
-	description()
-	keepDependencies(false)
-	disabled(false)
-	concurrentBuild(false)
-	steps {
-		shell("""git ls-remote --heads  https://github.com/MNT-Lab/d192l-module.git
 
-          ./script.sh > output.txt""")
-	}
-	publishers {
-		archiveArtifacts {
-			pattern("output.txt,")
-			allowEmpty(false)
-			onlyIfSuccessful(false)
-			fingerprint(false)
-			defaultExcludes(true)
+for (i in (1..4)) {
+	job("MNTLAB-" + student + "-child${i}-build-job") {
+		description()
+		keepDependencies(false)
+		disabled(false)
+		concurrentBuild(false)
+		steps {
+			shell('''
+def gitURL = "https://github.com/MNT-Lab/d192l-module.git"
+def command = "git ls-remote --heads $gitURL"
+def proc = command.execute()
+proc.waitFor()
+
+def branches = proc.in.text.readLines().collect{
+it.split('/')[-1]
+}
+return branches
+			'''
+			)			
+		fallbackScript('"No branches"')
+		}
+		// ./script.sh > output.txt
+		publishers {
+			archiveArtifacts {
+				pattern("output.txt")
+				allowEmpty(false)
+				onlyIfSuccessful(false)
+				fingerprint(false)
+				defaultExcludes(true)
+			}
 		}
 	}
 }
+
+
+
+
+
+
