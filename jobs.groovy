@@ -55,15 +55,7 @@ echo 'BRANCH=$BRANCH' > master
                 propertiesFile("MNT-LAB-hbledai-childe-"+ i,  failTriggerOnMissing = true)}
  
             }}
-        downstreamParameterized {
-            trigger("master") {
-
-                parameters {
-                propertiesFile("MNT-LAB-hbledai-childe-"+ i,  failTriggerOnMissing = true)}
- 
-            }}  
-    }
-    
+   } 
     }}
     
     
