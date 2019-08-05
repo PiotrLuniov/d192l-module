@@ -4,7 +4,7 @@ job('MNTLAB-kshevchenko-main-build-job') {
         activeChoiceParam('BRANCH_NAME') {
             choiceType('SINGLE_SELECT')
             groovyScript {
-                script('return ["kshevchenko", "master"]')
+                script('return ["kshevchenko", "mmarkova", "hkanonik", "pluniov", "master"]')
                 fallbackScript('return ["error"]')
             }
         }
