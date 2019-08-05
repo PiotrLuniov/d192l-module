@@ -41,7 +41,7 @@ job('MNTLAB-abutsko-main-build-job') {
                     block {
                         buildStepFailure('FAILURE')
                         failure('FAILURE')
-                        ustable('USTABLE')
+                        unstable('UNSTABLE')
                     }
                     parameters {
                         predefinedProp('BRANCH_NAME', '$BRANCH_NAME')
