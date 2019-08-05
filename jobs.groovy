@@ -24,29 +24,31 @@ job('MNTLAB-abutsko-main-build-job') {
     }
 }
 
-job('MNTLAB-abutsko-child1-build-job') {
-    description('The simplest child job')
-    
-    parameters {
-        activeChoiceParam('BRANCH_NAME') {
-            description('Choose jobs which will be executed')
-            choiceType('SINGLE_SELECT')
+for ( i in (1..4) ) {
+    job('MNTLAB-abutsko-child${i}-build-job') {
+        description('The simplest child job')
+        
+        parameters {
+            activeChoiceParam('BRANCH_NAME') {
+                description('Choose jobs which will be executed')
+                choiceType('SINGLE_SELECT')
 
-            groovyScript {
-                script('''
-                    def gitURL = "https://github.com/MNT-Lab/d192l-module.git"
-                    def command = "git ls-remote -h $gitURL"
-                    def proc = command.execute()
-                    proc.waitFor()
+                groovyScript {
+                    script('''
+                        def gitURL = "https://github.com/MNT-Lab/d192l-module.git"
+                        def command = "git ls-remote -h $gitURL"
+                        def proc = command.execute()
+                        proc.waitFor()
 
-                    def branches = proc.in.text.readLines().collect{
-                        it.split('/')[-1]
-                    }
+                        def branches = proc.in.text.readLines().collect{
+                            it.split('/')[-1]
+                        }
 
-                    return branches
-                ''')
+                        return branches
+                    ''')
 
-                fallbackScript('"There is no branches"')
+                    fallbackScript('"There is no branches"')
+                }
             }
         }
     }
