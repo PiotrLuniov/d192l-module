@@ -1,4 +1,4 @@
-job('MNT-lab-hbledai-main-job') {
+job('MNT-LAB-hbledai-main-build-job') {
  blockOnDownstreamProjects()
     parameters {
         activeChoiceParam('BRANCH') {
@@ -30,7 +30,7 @@ return branches
                 script('''
 def myList = []
 for (i in 1..4) {
-myList.add("MNT-LAB-hbledai-childe-"+ i)
+myList.add("MNT-LAB-hbledai-child-"+ i+"-build-job")
 }
 return myList
 ''')
@@ -50,10 +50,10 @@ echo 'BRANCH=$BRANCH' > master
 ''')
         for (i in 1..4) { 
           downstreamParameterized {
-            trigger("MNT-LAB-hbledai-childe-"+ i) {
+            trigger("MNT-LAB-hbledai-child-"+ i+"-build-job") {
 
                 parameters {
-                propertiesFile("MNT-LAB-hbledai-childe-"+ i,  failTriggerOnMissing = true)}
+                propertiesFile("MNT-LAB-hbledai-child-"+ i+"-build-job",  failTriggerOnMissing = true)}
  
             }}
    } 
@@ -61,7 +61,7 @@ echo 'BRANCH=$BRANCH' > master
     
     
 for (i in 1..4) {
-    job("MNT-LAB-hbledai-childe-"+ i){
+    job("MNT-LAB-hbledai-child-"+ i+"-build-job"){
         parameters {
           stringParam('BRANCH')
         }
