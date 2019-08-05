@@ -1,6 +1,7 @@
 job("MNTLAB-sbarysevich-master") {
-  choiceParam('BRANCH_NAME', ['sbarysevich', 'master',])
-  activeChoiceParam('slaves') {
+ parameters {
+   choiceParam('BRANCH_NAME', ['sbarysevich', 'master',])
+   activeChoiceParam('slaves') {
      choiceType('CHECKBOX')
      groovyScript {
           script('''
@@ -9,8 +10,10 @@ job("MNTLAB-sbarysevich-master") {
                      slave.add("MNTLAB-sbarysevich-child"+it as String)
                  }return slave
            ''')
-           fallbackScript('"error"')
-   }
+           fallbackScript("error")
+      }
+  } 
+ }
   blockOnDownstreamProjects()
    steps {
         downstreamParameterized {
@@ -27,7 +30,6 @@ job("MNTLAB-sbarysevich-master") {
         }
     }
 }
-
 
 (1..4).each{
       job("MNTLAB-sbarysevich-child"+it as String) {
@@ -47,7 +49,7 @@ job("MNTLAB-sbarysevich-master") {
                     }
                 
                     def branches = proc.in.text.readLines().collect {
-                        it.replaceAll(/[a-z0-9]*\trefs\/heads\//, '')
+                        it.replaceAll(/[a-z0-9]*\trefs/heads//, '')
                     }''')
              fallbackScript('"any branche not found"')
           }
@@ -70,9 +72,6 @@ job("MNTLAB-sbarysevich-master") {
         }
      }
 }
-
-
-
 
 
 
