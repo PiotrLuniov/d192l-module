@@ -18,7 +18,8 @@ return list
             }
         }
     }
- 	publishers {
+    blockOnDownstreamProjects()
+ 	steps {
         downstreamParameterized {
             trigger('$BUILDS_TRIGGER') {
         	    block {
@@ -27,11 +28,8 @@ return list
 	                unstable('UNSTABLE')
 				}
                 parameters {
-                    predefinedBuildParameters {
-                        properties('BRANCH_NAME=$BRANCH_NAME')
-                        textParamValueOnNewLine(true)
+					predefinedProp('BRANCH_NAME', '$BRANCH_NAME')
 
-                	}
                 }
             }
         }
@@ -66,18 +64,15 @@ return branches
 		}
 
 		steps {
-		    shell {
-		    	command('''
+		    shell ('''
 chmod +x script.sh  
 ./script.sh > output.txt 
-rm script.sh
-tar czvf ${BRANCH_NAME}_dsl_script.tar.gz * 
+tar czvf ${BRANCH_NAME}_dsl_script.tar.gz output.txt 
 				''')
-			}
 		}
 		publishers {
 			archiveArtifacts{
-				pattern('output.txt')
+				pattern('jobs.groovy')
 				pattern('${BRANCH_NAME}_dsl_script.tar.gz')
 				onlyIfSuccessful()
 			}
