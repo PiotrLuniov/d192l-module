@@ -8,7 +8,19 @@ job('MNTLAB-kkaminski-main-build-job') {
             description('Available options')
             choiceType('CHECKBOX')
             
+            groovyScript {
+                script('''
+                
+             def list=[]
+	         (1..4).each {
+	         list.add("MNTLAB-kkaminski-child${it}-build-job")
+       }
+	      return list
+                    
+            ''')
+              
         }
     
     }
+  }
 }
