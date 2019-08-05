@@ -19,7 +19,7 @@ job('MNTLAB-abutsko-main-build-job') {
                     def branches = "git ls-remote --heads --quiet | awk -F / '{print $NF}'".execute()
                     listOfBranches = branches.split('\n').collect{ it as String }
 
-                    return listOfBranches
+                    return [listOfBranches]
                 ''')
 
                 fallbackScript('"There is no branches"')
