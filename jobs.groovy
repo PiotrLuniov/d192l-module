@@ -5,7 +5,6 @@
 job("MNTLAB-mmarkova-main-build-job") {
   	parameters {
         activeChoiceParam('BRANCH_NAME') {
-            description('Allows user choose from multiple choices')
             choiceType('SINGLE_SELECT')
             groovyScript {
                 script('''
@@ -16,13 +15,14 @@ job("MNTLAB-mmarkova-main-build-job") {
 					branches.each {
 						branchesNames.add("${it.name}")
 					}
+					println branchesNames
 					return branchesNames
           		''')
             }
         }
 
-		activeChoiceParam('JOBS') {
-			description('Allows user choose from multiple choices')
+		activeChoiceParam('BUILDS_TRIGGER') {
+			description('Available options')
 			choiceType('CHECKBOX')
 			groovyScript {
 			  script('''
@@ -30,6 +30,7 @@ job("MNTLAB-mmarkova-main-build-job") {
 			        4.times {
 			            jobs.add("MNTLAB-mmarkova-child${it+1}-build-job")
 			        }
+			        println jobs
 			        return jobs
 			  	''')
 	      	}
