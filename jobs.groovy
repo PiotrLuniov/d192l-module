@@ -6,8 +6,9 @@ job(mainjob) {
 	description()
 	keepDependencies(false)
 	parameters {
-        	activeChoiceParam('JOBS') {
-	        	description('Choose branch name')
+        	//jobs execute
+		activeChoiceParam('JOBS') {
+	        	description('Choose execute jobs name')
 	        	//filterable()
 	        	choiceType('CHECKBOX')
 	        	groovyScript {
@@ -22,9 +23,32 @@ job(mainjob) {
 	            		fallbackScript('"fallback choice"')
         	    	}
 		}
-	choiceParam("BRANCH_NAME", [student, "master"], "")
+		//branch name
+		choiceParam("BRANCH_NAME", [student, "master"])
+		
 	}	
-
+	
+	steps {
+        	downstreamParameterized {
+          		trigger('$JOBS') {
+                		block {
+                    			buildStepFailure('FAILURE')
+                    			failure('FAILURE')
+                    			unstable('UNSTABLE')
+                		}
+                		parameters {
+                    			predefinedProp('BRANCH_NAME', '$BRANCH_NAME')
+                		}
+            		}
+            		trigger('Project2') {
+                		parameters {
+                    			currentBuild()
+                		}
+            		}
+        	}
+    	}
+	
+	
 	scm {
 		git {
 			remote {
@@ -40,6 +64,10 @@ job(mainjob) {
         shell("chmod +x script.sh")
         shell("echo \$(./script.sh)")
 	}
+	
+	
+	
+	
 }
 
 job(childjob) {
