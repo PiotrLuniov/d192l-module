@@ -1,17 +1,19 @@
-def student = "ashamchonak"
+String student = "ashamchonak"
+String mainjob = "MNTLAB-" + student + "-main-build-job"
+String childjob = "MNTLAB-" + student + "-child1-build-job"
 
-job("MNTLAB-{{ student }}-main-build-job") {
+job(mainjob) {
 	description()
 	keepDependencies(false)
 	parameters {
-		stringParam("BRANCH_NAME", "{student}", "")
+		stringParam("BRANCH_NAME", student, "")
 	}
 	scm {
 		git {
 			remote {
 				github("MNT-Lab/d192l-module", "https")
 			}
-			branch("*/{student}")
+			branch("*/student")
 		}
 	}
 	disabled(false)
@@ -23,7 +25,7 @@ job("MNTLAB-{{ student }}-main-build-job") {
 	}
 }
 
-job("MNTLAB-{student}-child1-build-job") {
+job(childjob) {
 	description()
 	keepDependencies(false)
 	disabled(false)
