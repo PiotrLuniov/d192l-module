@@ -37,8 +37,8 @@ for (i in 1..3) {
       }
     }
     steps {
-      shell("chmod +x /var/jenkins_home/workspace/EPBYMINW9010/MNTLAB-hkanonik-child$i-build-job/script.sh \
-      /var/jenkins_home/workspace/MNTLAB-hkanonik-child1-build-job/script.sh > output.txt")
+      shell("chmod +x ./script.sh \
+      ./script.sh > output.txt")
       shell('tar -zcvf $BUILD_NUMBER_dsl_script.tar.gz ./output.txt')
     }
   }
