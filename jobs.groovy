@@ -2,7 +2,6 @@
 job('MNTLAB-abutsko-main-build-job') {
     description('The job triggers the child jobs')
 
-    // Branch name parameter
     parameters {
         // I don't understand we should use choiceParam or stringParam…
         // But I prefer choiceParam because we should have only 2 predefined choices
@@ -26,19 +25,23 @@ job('MNTLAB-abutsko-main-build-job') {
 }
 
 job('MNTLAB-abutsko-child1-build-job') {
-    activeChoiceParam('BRANCH_NAME') {
-        description('Choose jobs which will be executed')
-        choiceType('SINGLE_SELECT')
+    description('The simplest child job')
+    
+    parameters {
+        activeChoiceParam('BRANCH_NAME') {
+            description('Choose jobs which will be executed')
+            choiceType('SINGLE_SELECT')
 
-        groovyScript {
-            script('''
-                def branches = "git ls-remote --heads --quiet | awk -F / '{print $NF}'".execute()
-                def listOfBranches = branches.text.split('\n').collect{ it as String }
+            groovyScript {
+                script('''
+                    def branches = "git ls-remote --heads --quiet | awk -F / '{print $NF}'".execute()
+                    def listOfBranches = branches.text.split('\n').collect{ it as String }
 
-                return listOfBranches
-            ''')
+                    return listOfBranches
+                ''')
 
-            fallbackScript('"There is no branches"')
+                fallbackScript('"There is no branches"')
+            }
         }
     }
 }
