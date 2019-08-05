@@ -3,8 +3,8 @@ job('MNTLAB-akuznetsova-main-build-job') {
         activeChoiceParam('BRANCH_NAME') {
             choiceType('SINGLE_SELECT')
             groovyScript {
-                script('["akuznetsova", "master"]')
-                fallbackScript('"error"')
+                script('return["akuznetsova", "master"]')
+                fallbackScript('return["error"]')
             }
         }
         activeChoiceReactiveParam('BUILDS_TRIGGER') {
@@ -13,7 +13,7 @@ job('MNTLAB-akuznetsova-main-build-job') {
                 script('''
                 def list=[];
                 for (i in 1..4){
-                list.add("MNTLAB-"+BRANCH_NAME+"-child"+i+"-build-job");
+                list.add("MNTLAB-akuznetsova-child"+i+"-build-job");
                 }
                 return list;
                 ''')
