@@ -4,6 +4,9 @@
 
 job("MNTLAB-mmarkova-main-build-job") {
   	parameters {
+
+  		choiceParam('BRANCH_NAME', ['mmarkova (default)', 'master'])
+
 		activeChoiceParam('BUILDS_TRIGGER') {
 			description('Available options')
 			choiceType('CHECKBOX')
@@ -17,6 +20,28 @@ return jobs
 				''')
 	      	}
    		}
+
+   		activeChoiceParam('BRANCH_NAME') {
+            choiceType('SINGLE_SELECT')
+            groovyScript {
+                script('''
+def project = 'MNT-Lab/d192l-module'
+def branchApi = new URL("https://api.github.com/repos/${project}/branches")
+def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
+def branchesNames = []
+def index = 0
+branches.each { elem ->
+	branchesNames.add("${elem.name}")
+}
+branchesNames.eachWithIndex { elem, ind ->
+	if ("${elem}" == 'mmarkova') 
+  		index = ind
+}
+branchesNames.swap(0, index)
+return branchesNames
+          		''')
+            }
+        }
 	}
 
 	blockOnDownstreamProjects()
@@ -46,30 +71,28 @@ return jobs
 // part 2: child jobs execute
 1.step 5, 1, {
     job("MNTLAB-mmarkova-child${it}-build-job") {
-        
-	  	parameters {
-	        activeChoiceParam('BRANCH_NAME') {
-	            choiceType('SINGLE_SELECT')
-	            groovyScript {
-	                script('''
-	def project = 'MNT-Lab/d192l-module'
-	def branchApi = new URL("https://api.github.com/repos/${project}/branches")
-	def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
-	def branchesNames = []
-	def index = 0
-	branches.each { elem ->
-		branchesNames.add("${elem.name}")
-	}
-	branchesNames.eachWithIndex { elem, ind ->
-    	if ("${elem}" == 'mmarkova') 
-      		index = ind
-	}
-	branchesNames.swap(0, index)
-	return branchesNames
-	          		''')
-	            }
-	        }
-	    } 
+		parameters {
+		   		activeChoiceParam('BRANCH_NAME') {
+		            choiceType('SINGLE_SELECT')
+		            groovyScript {
+		                script('''
+def project = 'MNT-Lab/d192l-module'
+def branchApi = new URL("https://api.github.com/repos/${project}/branches")
+def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
+def branchesNames = []
+def index = 0
+branches.each { elem ->
+	branchesNames.add("${elem.name}")
+}
+branchesNames.eachWithIndex { elem, ind ->
+	if ("${elem}" == 'mmarkova') 
+  		index = ind
+}
+branchesNames.swap(0, index)
+return branchesNames
+		          		''')
+		            }
+		        }
 
 	    scm {
 	        git {
