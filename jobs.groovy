@@ -25,7 +25,7 @@ job('MNTLAB-abutsko-main-build-job') {
 }
 
 for ( i in (1..4) ) {
-    job('MNTLAB-abutsko-child${i}-build-job') {
+    job("MNTLAB-abutsko-child${i}-build-job") {
         description('The simplest child job')
         
         parameters {
