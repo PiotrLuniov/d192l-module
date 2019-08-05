@@ -2,7 +2,7 @@
 job('MNTLAB-apavarnitsyn-main-build-job') {
    	description('The job triggers four child jobs')
     parameters {
-        choiceParam('BRANCH_NAME', ['apavarnitsyn (default)', 'master'], 'Choose branch name')
+        choiceParam('BRANCH_NAME', ['apavarnitsyn', 'master'], 'Choose branch name')
         activeChoiceParam('BUILDS_TRIGGER') {
             description('Allows user choose from multiple choices')
             choiceType('CHECKBOX')
@@ -21,7 +21,11 @@ return list
  	publishers {
         downstreamParameterized {
             trigger('$BUILDS_TRIGGER') {
-                condition('UNSTABLE_OR_BETTER')
+        	    block {
+	                buildStepFailure('FAILURE')
+	                failure('FAILURE')
+	                unstable('UNSTABLE')
+				}
                 parameters {
                     predefinedBuildParameters {
                         properties('BRANCH_NAME=$BRANCH_NAME')
@@ -66,8 +70,16 @@ return branches
 		    	command('''
 chmod +x script.sh  
 ./script.sh > output.txt 
-tar czvf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy
+rm script.sh
+tar czvf ${BRANCH_NAME}_dsl_script.tar.gz * 
 				''')
+			}
+		}
+		publishers {
+			archiveArtifacts{
+				pattern('output.txt')
+				pattern('${BRANCH_NAME}_dsl_script.tar.gz')
+				onlyIfSuccessful()
 			}
 		}
 	}
