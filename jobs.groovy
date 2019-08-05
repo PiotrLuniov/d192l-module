@@ -11,7 +11,14 @@ job(mainjob) {
 	        	//filterable()
 	        	choiceType('CHECKBOX')
 	        	groovyScript {
-        	  		script('["choice1", "choice2"]')
+        	  		script('''
+                    			def jobs = []
+                   			(1..4).each {
+                        		jobs.add("MNTLAB-" + student + "-child${it}-build-job")
+                    			}
+			                return jobs
+                			'''
+				)
 	            		fallbackScript('"fallback choice"')
         	    	}
 		}
