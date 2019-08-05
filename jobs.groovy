@@ -27,7 +27,7 @@ job('MNTLAB-abutsko-main-build-job') {
                     name('branch')
                     url('https://github.com/MNT-Lab/d192l-module.git')
                 }
-                branch("abutsko")
+                branch("\$BRANCH_NAME")
             }
         }
 
