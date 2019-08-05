@@ -80,6 +80,16 @@ for ( i in (1..4) ) {
 
         steps {
             shell('sh script.sh > output.txt')
+
+            shell('tar czf $BRANCH_NAME_dsl_script.tar.gz jobs.groovy')
+        }
+
+        publishers {
+            archiveArtifacts {
+                pattern('output.txt')
+                pattern('$BRANCH_NAME_dsl_script.tar.gz')
+                onlyIfSuccessful()
+            }
         }
     }
 }
