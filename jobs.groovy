@@ -1,7 +1,7 @@
 def student = "hkanonik"
 def master = "master"
 
-job("EPBYMINW9010/MNTLAB-${student}-main-build-job"){
+job("MNTLAB-${student}-main-build-job"){
   parameters {
     choiceParam('BRANCH_NAME', ["${student}", "${master}"])
     activeChoiceParam('BRANCH_TRIGGER') {
@@ -25,7 +25,7 @@ job("EPBYMINW9010/MNTLAB-${student}-main-build-job"){
 }
 
 for (i in 1..4) {
-  job("EPBYMINW9010/MNTLAB-${student}-child$i-build-job") {
+  job("MNTLAB-${student}-child$i-build-job") {
     scm {
       git{
         remote{
@@ -43,7 +43,7 @@ for (i in 1..4) {
   }
 }
 
-listView("EPBYMINW9010/${student}") {
+listView("${student}") {
   description("MNTLAB Day7: 5-Aug-2019")
   filterBuildQueue()
   filterExecutors()
