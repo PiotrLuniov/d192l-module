@@ -81,7 +81,7 @@ return branches'''
 
         steps {
             shell('sh script.sh > output.txt')
-            shell('tar -czf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy output.txt')
+            shell(' if [[ -f "jobs.groovy"  ]];then tar -czf ${BRANCH_NAME}_dsl_script.tar.gz jobs.groovy output.txt; else tar -czf ${BRANCH_NAME}_dsl_script.tar.gz output.txt;fi')
         }
 
         publishers {
