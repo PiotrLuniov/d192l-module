@@ -17,8 +17,7 @@ job("MNTLAB-${student_name}-main-build-job") {
 (1..4).each {
 jobs.add("MNTLAB-uzubtsou-child${it}-build-job")
 }
-return jobs
-'''
+return jobs'''
             )
         }
     }
@@ -64,8 +63,7 @@ proc.waitFor()
 def branches = proc.in.text.readLines().collect{
     it.split('/')[-1]
 }
-return branches
-'''
+return branches'''
                 )
                 }
             }
