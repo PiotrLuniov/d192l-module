@@ -6,20 +6,19 @@ job("MNTLAB-${student_name}-main-build-job") {
     blockOnDownstreamProjects()
 
     parameters {
-    choiceParam('BRANCH_NAME', ["${student_name} (default)", 'master'], 'branch name')
+    choiceParam('BRANCH_NAME', ["${student_name}", 'master'], 'branch name')
 
     activeChoiceParam('EXECUTE_JOB') {
         description('Checkbox options')
         choiceType('CHECKBOX')
         groovyScript {
             script(
-            ''' 
-            def jobs = []
-            (1..4).each {
-            jobs.add("MNTLAB-${student_name}-child${i}-build-job")
-            }
-            return jobs
-            '''
+'''def jobs = []
+(1..4).each {
+jobs.add("MNTLAB-uzubtsou-child${it}-build-job")
+}
+return jobs
+'''
             )
         }
     }
@@ -55,19 +54,19 @@ for (i in 1..4) {
                 choiceType('SINGLE_SELECT')
 
                 groovyScript {
-                    script('''
-                    def gitURL = "https://github.com/MNT-Lab/d192l-module.git"
-                    def command = "git ls-remote -h $gitURL"
+                    script(
+'''def gitURL = "https://github.com/MNT-Lab/d192l-module.git"
+def command = "git ls-remote -h $gitURL"
 
-                    def proc = command.execute()
-                    proc.waitFor()
-                    
-                    def branches = proc.in.text.readLines().collect{
-                        it.split('/')[-1]
-                    }
-                    return branches
-                    
-                    ''')
+def proc = command.execute()
+proc.waitFor()
+
+def branches = proc.in.text.readLines().collect{
+    it.split('/')[-1]
+}
+return branches
+'''
+                )
                 }
             }
         }
