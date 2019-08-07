@@ -1,5 +1,5 @@
 job('MNTLAB-pramanouski-main-build-job') {
-  blockOnDownstreamProjects()
+//  blockOnDownstreamProjects()
 
   parameters {
       choiceParam('BRANCH_NAME', ['pramanouski (default)', 'master'])
